@@ -33,10 +33,6 @@ export class RegisterUserComponent {
             alert('Token missing in the response');
           }
           
-          
-          // Handle successful registration
-          console.log('User registered successfully');
-          alert('User registered successfully');
         },
         (error) => {
           // Handle registration error

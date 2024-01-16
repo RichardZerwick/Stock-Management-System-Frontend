@@ -34,8 +34,6 @@ export class LoginUserComponent {
             localStorage.setItem('token', response.token);
           }
           
-
-          
         },
         (error) => {
           // Handle login error
