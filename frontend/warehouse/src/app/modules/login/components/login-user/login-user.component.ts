@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../../../../core/services/auth/auth.service';
 import { IUser } from 'src/app/core/types/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,10 @@ export class LoginUserComponent {
     role: 'admin',
   };
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router
+    ) {}
 
   onSubmit(loginForm: NgForm) {
     if (loginForm.valid) {
@@ -32,6 +36,8 @@ export class LoginUserComponent {
 
             //Store the token in local storage (for demonstration purposes)
             localStorage.setItem('token', response.token);
+
+            this.router.navigate(['/profile']);
           }
           
         },
