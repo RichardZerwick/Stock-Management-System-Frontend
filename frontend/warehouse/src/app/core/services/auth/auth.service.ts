@@ -11,12 +11,15 @@ import { ApiService } from '../api/api.service';
 export class AuthService {
 
   private token: string | null = null; // Token property
+  private userId: number | null = null; // User ID property
+  private userName: string | null = null; // User Name property
 
   constructor(
     private http: HttpClient,
     private apiService: ApiService) {
     // Initialize token from local storage if available
     this.token = localStorage.getItem('token');
+    //this.userId = parseInt(localStorage.getItem('userId') || '', 10);
   }
 
   // User Registration
@@ -51,6 +54,32 @@ export class AuthService {
   // Get the token
   getToken(): string | null {
     return this.token;
+  }
+  
+  // Save the currently logged-in user's ID to local storage
+  setUserId(userData: number | undefined): void {
+    if (userData && (userData !== null && userData !== undefined)) {
+      this.userId = userData;
+      localStorage.setItem('userId', userData.toString());
+    } else {
+      // Handle the case where userData.id is null or undefined
+      console.error('Invalid user data provided for setUserId');
+    }
+  }
+
+  // Get the currently logged-in user's ID from local storage
+  getUserId(): number | null {
+    return this.userId;
+  }
+
+  // Save the currently logged-in user's name
+  setUserName(name: string | null): void {
+    this.userName = name;
+  }
+
+  // Get the currently logged-in user's name
+  getUserName(): string | null {
+    return this.userName;
   }
 
   // Attach token to HTTP headers

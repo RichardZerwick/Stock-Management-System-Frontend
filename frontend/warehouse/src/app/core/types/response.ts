@@ -3,4 +3,5 @@ export interface IResponse<T> {
     message: string;
     id?: T;
     token?: string;
+    name?: string;
 }

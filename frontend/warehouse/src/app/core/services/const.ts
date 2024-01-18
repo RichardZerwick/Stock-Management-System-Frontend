@@ -6,5 +6,6 @@ export enum AuthEndPoints{
 }
 
 export enum UserEndPoints{
-    
+    RETRIEVE = "user/info",
+    UPDATE = "user/update",
 }

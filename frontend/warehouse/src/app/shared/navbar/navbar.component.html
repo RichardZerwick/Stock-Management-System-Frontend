@@ -12,7 +12,7 @@
           <a class="nav-link" routerLink="/profile">Profile</a>
         </li>
         <li class="nav-item" *ngIf="isLoggedIn()">
-          <a class="nav-link" (click)="logout()">Log Out</a>
+          <a class="nav-link" (click)="logout()">Log Out {{ authService.getUserName() }}</a>
         </li>
       </ul>
     </div>

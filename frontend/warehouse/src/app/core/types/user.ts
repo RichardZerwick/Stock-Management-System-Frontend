@@ -7,6 +7,6 @@ export interface IUser {
 }
 
 export interface IUserData {
-    id: number;
+    id: number | null;
     //token: string
 }
