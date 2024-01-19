@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../../../../core/services/auth/auth.service';
 import { IUser } from 'src/app/core/types/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-user',
@@ -15,18 +16,25 @@ export class RegisterUserComponent {
     role: 'admin', // Set the default role
   };
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router) {}
 
   onSubmit(registrationForm: NgForm) {
     if (registrationForm.valid) {
       // Call your user service to register the user
       this.authService.registerUser(this.user).subscribe(
         (response) => {
-          if(response && response.token){
-            // Set the token in AuthService
+          if(response && response.token && response.tokenExpiry){
+            // Set the token and token expiry in AuthService
             this.authService.setToken(response.token);
+            this.authService.setTokenExp(response.tokenExpiry);
+            console.log(response.tokenExpiry);
+            console.log(response.token);
             console.log('User registered successfully');
             alert('User registered successfully');
+
+            this.router.navigate(['/login']);
           }
           else{
             console.error('Token missing in the response');

@@ -3,5 +3,9 @@ export interface IResponse<T> {
     message: string;
     id?: T;
     token?: string;
+    tokenExpiry?: Date;
     name?: string;
+    email?: string;
+    lastLogin?: Date;
+    password?: string;
 }

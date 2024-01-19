@@ -10,16 +10,28 @@ import { ApiService } from '../api/api.service';
 })
 export class AuthService {
 
+  userData: IUserData = {
+    id: 0,
+  };
+  
   private token: string | null = null; // Token property
+  private tokenExp: Date | null = null; // Token expiry property
   private userId: number | null = null; // User ID property
   private userName: string | null = null; // User Name property
+  private lastLogin: Date | null = null; // Last Login property
 
   constructor(
     private http: HttpClient,
-    private apiService: ApiService) {
+    private apiService: ApiService,) {
     // Initialize token from local storage if available
     this.token = localStorage.getItem('token');
-    //this.userId = parseInt(localStorage.getItem('userId') || '', 10);
+    this.tokenExp = localStorage.getItem('tokenExp')
+      ? new Date(localStorage.getItem('tokenExp') || '')
+      : null;
+    this.userId = parseInt(localStorage.getItem('userId') || '', 10);
+    this.lastLogin = localStorage.getItem('lastLogin')
+      ? new Date(localStorage.getItem('lastLogin') || '')
+      : null;
   }
 
   // User Registration
@@ -33,11 +45,14 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean{
-    return !!localStorage.getItem('token');
+    return !!this.token && !!this.lastLogin;
   }
 
   logoutUser(): void{
     this.setToken(null);
+    this.setTokenExp(null);
+    this.setUserId(undefined);
+    this.setLastLogin(null);
   }
 
   // Set the token
@@ -54,6 +69,22 @@ export class AuthService {
   // Get the token
   getToken(): string | null {
     return this.token;
+  }
+
+  // Set the token expriry
+  setTokenExp(tokenExp: Date | null) {
+    this.tokenExp = tokenExp;
+    // Store the token expiry in local storage
+    if(tokenExp){
+      localStorage.setItem('tokenExp', tokenExp.toString());
+    }else{
+      localStorage.removeItem('tokenExp');
+    }
+  }
+
+  // get the token expiry
+  getTokenExp(): Date | null {
+    return this.tokenExp;
   }
   
   // Save the currently logged-in user's ID to local storage
@@ -80,6 +111,21 @@ export class AuthService {
   // Get the currently logged-in user's name
   getUserName(): string | null {
     return this.userName;
+  }
+
+  // Save the last login timestamp
+  setLastLogin(lastLogin: Date | null): void {
+    this.lastLogin = lastLogin;
+    if (lastLogin) {
+      localStorage.setItem('lastLogin', lastLogin.toString());
+    } else {
+      localStorage.removeItem('lastLogin');
+    }
+  }
+
+  // Get the last login timestamp
+  getLastLogin(): Date | null {
+    return this.lastLogin;
   }
 
   // Attach token to HTTP headers

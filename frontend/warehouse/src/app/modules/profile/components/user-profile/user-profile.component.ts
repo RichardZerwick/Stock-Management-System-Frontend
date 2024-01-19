@@ -59,6 +59,20 @@ export class UserProfileComponent {
               // Handle successful login
               console.log('Updated successfully');
               alert('Updated successfully');
+
+              // Get user information in UserService
+              this.usersService.getUser({id: userId}).subscribe(
+                (userInfoResponse) => {
+                  if (userInfoResponse && userInfoResponse.name && userInfoResponse.id !== undefined) {
+                    // Set the user's name in AuthService
+                    this.authService.setUserName(userInfoResponse.name);
+                  }
+                },
+                (userInfoError) => {
+                  console.error('Error fetching user info:', userInfoError);
+                }
+              );
+
             }
           },
           (error) => {

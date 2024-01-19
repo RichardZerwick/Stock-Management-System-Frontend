@@ -27,7 +27,53 @@ export class LoginUserComponent {
     private authService: AuthService,
     private userService: UsersService,
     private router: Router
-    ) {}
+  ) {}
+
+  ngOnInit() {
+    console.log(this.authService.getTokenExp());
+    console.log(this.authService.getToken());
+    if (this.authService.getToken() !== null && this.authService.getTokenExp() !== null) {
+      const tokenExpValue = new Date(this.authService.getTokenExp() || '');
+      
+      if (tokenExpValue instanceof Date) {
+        const tokenExpTimestamp: number = tokenExpValue.getTime();
+        
+        if (Date.now() <= tokenExpTimestamp) {
+          console.log('token is valid');
+
+          const userId = this.authService.getUserId();
+          // Get user information in UserService
+          this.userService.getUser({id: userId}).subscribe(
+            (userInfoResponse) => {
+              if (userInfoResponse && userInfoResponse.name && userInfoResponse.id !== undefined) {
+                console.log(userInfoResponse.email);
+                console.log(userInfoResponse.password);
+                this.user.email = userInfoResponse.email;
+                this.user.password = userInfoResponse.password;
+
+                this.authService.loginUser(this.user)
+                alert('Login successful');
+                this.router.navigate(['/profile']);
+              }
+            },
+            (userInfoError) => {
+              console.error('Error fetching user info:', userInfoError);
+            }
+          );
+          
+          
+        } else {
+          console.log('Token has expired');
+        }
+      } else {
+        // Handle the case where tokenExpValue is not a Date
+        console.error('Unexpected type for token expiration:', typeof tokenExpValue);
+      }
+    }
+    else {
+      console.log('Invalid token or token expiry');
+    }
+  }
 
   onSubmit(loginForm: NgForm) {
     if (loginForm.valid) {
@@ -50,8 +96,12 @@ export class LoginUserComponent {
               this.userService.getUser({id: userId}).subscribe(
                 (userInfoResponse) => {
                   if (userInfoResponse && userInfoResponse.name && userInfoResponse.id !== undefined) {
-                    // Set the user's name in AuthService
+                    // Set the user's name and last login in AuthService
                     this.authService.setUserName(userInfoResponse.name);
+                    if(userInfoResponse.lastLogin){
+                      this.authService.setLastLogin(userInfoResponse.lastLogin);
+                    }
+                    
                   }
                 },
                 (userInfoError) => {
