@@ -8,4 +8,5 @@ export interface IResponse<T> {
     email?: string;
     lastLogin?: Date;
     password?: string;
+    products?: T;
 }

@@ -9,3 +9,8 @@ export enum UserEndPoints{
     RETRIEVE = "user/info",
     UPDATE = "user/update",
 }
+
+export enum ProductEndPoints{
+    CREATE = "product/create",
+    RETRIEVE = "product/retrieve",
+}

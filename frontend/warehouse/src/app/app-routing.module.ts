@@ -23,7 +23,7 @@ const routes: Routes = [
       import('./modules/profile/profile.module').then((m) => m.ProfileModule),
   },
   {
-    path: 'add_products',
+    path: 'products',
     loadChildren: () =>
       import('./modules/products/products.module').then((m) => m.ProductsModule),
   },

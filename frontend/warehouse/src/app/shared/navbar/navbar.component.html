@@ -9,13 +9,13 @@
           <a class="nav-link" routerLink="/login">Login</a>
         </li>
         <li class="nav-item dropdown" *ngIf="isLoggedIn()">
-          <a class="nav-link dropdown-toggle" href="#" id="productsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="productsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Products
           </a>
-          <div class="dropdown-menu" aria-labelledby="productsDropdown">
-            <a class="dropdown-item" routerLink="/all_products">All Products</a>
-            <a class="dropdown-item" routerLink="/add_product">Add Product</a>
-          </div>
+          <ul class="dropdown-menu" aria-labelledby="productsDropdown">
+            <a class="dropdown-item" routerLink="/products/all_products">All Products</a>
+            <a class="dropdown-item" routerLink="/products/add_products">Add Product</a>
+          </ul>
         </li>
         <li class="nav-item" *ngIf="isLoggedIn()">
           <a class="nav-link" routerLink="/profile">Profile</a>
