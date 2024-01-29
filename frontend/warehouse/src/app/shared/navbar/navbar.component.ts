@@ -14,8 +14,17 @@ export class NavbarComponent {
     return this.authService.isLoggedIn();
   }
 
+  // Check if the logged-in user is an admin
+  isAdmin(): boolean {
+    if(this.authService.getUserRole() == "admin"){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
   logout(): void {
     this.authService.logoutUser(); // Call the logout method from AuthService
-    this.router.navigate(['/login']); // Redirect to the login page
   }
 }

@@ -9,7 +9,7 @@ import { AllProductsComponent } from './components/all-products/all-products.com
 @NgModule({
   declarations: [
     AddProductsComponent,
-    AllProductsComponent
+    AllProductsComponent,
   ],
   imports: [
     CommonModule,

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { API_URL, ProductEndPoints } from '../const';
 import { IProduct, IProductData } from '../../types/product';
 import { IResponse } from '../../types/response';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -21,4 +22,10 @@ export class ProductsService {
   getAllProducts(): Observable<IResponse<IProduct[]>> {
     return this.http.get<IResponse<IProduct[]>>(`${API_URL}${ProductEndPoints.RETRIEVE}`);
   }
+
+  // Delete a product
+  deleteProduct(productId: number): Observable<IResponse<any>> {
+    return this.http.delete<IResponse<IProductData>>(`${API_URL}${ProductEndPoints.DELETE}/${productId}`);
+  }
+
 }

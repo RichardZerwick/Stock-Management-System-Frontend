@@ -29,63 +29,21 @@ export class LoginUserComponent {
     private router: Router
   ) {}
 
-  ngOnInit() {
-    console.log(this.authService.getTokenExp());
-    console.log(this.authService.getToken());
-    if (this.authService.getToken() !== null && this.authService.getTokenExp() !== null) {
-      const tokenExpValue = new Date(this.authService.getTokenExp() || '');
-      
-      if (tokenExpValue instanceof Date) {
-        const tokenExpTimestamp: number = tokenExpValue.getTime();
-        
-        if (Date.now() <= tokenExpTimestamp) {
-          console.log('token is valid');
-
-          const userId = this.authService.getUserId();
-          // Get user information in UserService
-          this.userService.getUser({id: userId}).subscribe(
-            (userInfoResponse) => {
-              if (userInfoResponse && userInfoResponse.name && userInfoResponse.id !== undefined) {
-                console.log(userInfoResponse.email);
-                console.log(userInfoResponse.password);
-                this.user.email = userInfoResponse.email;
-                this.user.password = userInfoResponse.password;
-
-                this.authService.loginUser(this.user)
-                alert('Login successful');
-                this.router.navigate(['/profile']);
-              }
-            },
-            (userInfoError) => {
-              console.error('Error fetching user info:', userInfoError);
-            }
-          );
-          
-          
-        } else {
-          console.log('Token has expired');
-        }
-      } else {
-        // Handle the case where tokenExpValue is not a Date
-        console.error('Unexpected type for token expiration:', typeof tokenExpValue);
-      }
-    }
-    else {
-      console.log('Invalid token or token expiry');
-    }
-  }
-
   onSubmit(loginForm: NgForm) {
     if (loginForm.valid) {
       this.authService.loginUser(this.user).subscribe(
         (response) => {
           console.log(response);
-          if(response && response.token && response.id !== undefined){
+          if(response && response.token && response.id !== undefined && response.role !== undefined && response.tokenExpiry !== undefined){
+            const tokenExpiryDate = new Date(response.tokenExpiry);
+            
             // Set the token in AuthService
             this.authService.setToken(response.token);
-
+            this.authService.setUserRole(response.role);
+            this.authService.setTokenExp(tokenExpiryDate);
+            console.log(tokenExpiryDate);
+            
             Promise.resolve().then(() => {
-              console.log(response.id);
               const id = response.id as unknown;
               const userId = id as number;
 
@@ -101,7 +59,7 @@ export class LoginUserComponent {
                     if(userInfoResponse.lastLogin){
                       this.authService.setLastLogin(userInfoResponse.lastLogin);
                     }
-                    
+                  
                   }
                 },
                 (userInfoError) => {

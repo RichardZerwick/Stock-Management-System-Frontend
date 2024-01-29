@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { IUser, IUserData } from '../../types/user';
 import { IResponse } from '../../types/response';
 import { ApiService } from '../api/api.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,16 +14,22 @@ export class AuthService {
   userData: IUserData = {
     id: 0,
   };
+
+  user: IUser = {
+    role: 'admin',
+  }
   
   private token: string | null = null; // Token property
   private tokenExp: Date | null = null; // Token expiry property
   private userId: number | null = null; // User ID property
   private userName: string | null = null; // User Name property
   private lastLogin: Date | null = null; // Last Login property
+  private role: string | undefined = undefined;
 
   constructor(
     private http: HttpClient,
-    private apiService: ApiService,) {
+    private apiService: ApiService,
+    private router: Router) {
     // Initialize token from local storage if available
     this.token = localStorage.getItem('token');
     this.tokenExp = localStorage.getItem('tokenExp')
@@ -32,6 +39,8 @@ export class AuthService {
     this.lastLogin = localStorage.getItem('lastLogin')
       ? new Date(localStorage.getItem('lastLogin') || '')
       : null;
+    this.role = localStorage.getItem('role') || undefined;
+    this.userName = localStorage.getItem('userName');
   }
 
   // User Registration
@@ -51,8 +60,11 @@ export class AuthService {
   logoutUser(): void{
     this.setToken(null);
     this.setTokenExp(null);
-    this.setUserId(undefined);
     this.setLastLogin(null);
+    localStorage.removeItem('userId');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('role');
+    this.router.navigate(['/login']);
   }
 
   // Set the token
@@ -106,6 +118,8 @@ export class AuthService {
   // Save the currently logged-in user's name
   setUserName(name: string | null): void {
     this.userName = name;
+    if(name !== null)
+    localStorage.setItem('userName', name);
   }
 
   // Get the currently logged-in user's name
@@ -126,6 +140,21 @@ export class AuthService {
   // Get the last login timestamp
   getLastLogin(): Date | null {
     return this.lastLogin;
+  }
+
+  // Save the user's role
+  setUserRole(role: string): void {
+    this.role = role;
+    if(role){
+      localStorage.setItem('role', role);
+    }else{
+      localStorage.removeItem('role');
+    }
+  }
+
+  // Get the user's role
+  getUserRole(): string | undefined {
+    return this.role;
   }
 
   // Attach token to HTTP headers

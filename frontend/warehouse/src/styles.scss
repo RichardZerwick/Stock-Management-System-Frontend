@@ -1,5 +1,10 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
 
+body, html {
+  height: 100%;
+  margin: 0;
+}
+
 .footer {
     background-color: #f8f9fa;
     padding: 20px;
@@ -8,3 +13,20 @@
     bottom: 0;
     width: 100%;
   }
+
+.body-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-container {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-root {
+  //flex: 1;
+  height: 100%;
+}

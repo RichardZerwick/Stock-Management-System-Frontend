@@ -9,4 +9,5 @@ export interface IResponse<T> {
     lastLogin?: Date;
     password?: string;
     products?: T;
+    role?: 'admin' | 'cashier';
 }

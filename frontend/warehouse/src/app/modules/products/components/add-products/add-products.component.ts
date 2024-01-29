@@ -25,30 +25,37 @@ export class AddProductsComponent {
   onSubmit(addProductsForm: NgForm){
     const id = this.authService.getUserId();
 
-    if(addProductsForm.valid && id !== null){
+    if(addProductsForm.valid && id !== null && this.product.product_quantity !== undefined){
       this.product.createdBy = id;
       
-      this.productsService.createProduct(this.product).subscribe(
-        (response) => {
-          if(response.success){
-            console.log("Product added successfully");
-            alert("Product added successfully");
-
-            addProductsForm.resetForm();
+      if(this.product.product_quantity > 0 && this.product.product_quantity <= 100 && Number.isInteger(this.product.product_quantity)){
+        this.productsService.createProduct(this.product).subscribe(
+          (response) => {
+            if(response.success){
+              console.log("Product added successfully");
+              alert("Product added successfully");
+  
+              addProductsForm.resetForm();
+            }
+            else{
+              console.error('Failed to add product');
+              alert('Failed to add product');
+            }
+          },
+          (error) => {
+            // Handle error
+            console.error('Failed to add product', error);
+            if (error.error && error.error.message) {
+              alert(error.error.message);
           }
-          else{
-            console.error('Failed to add product');
-            alert('Failed to add product');
-          }
-        },
-        (error) => {
-          // Handle error
-          console.error('Failed to add product', error);
-          if (error.error && error.error.message) {
-            alert(error.error.message);
         }
+        );
       }
-      );
+      else{
+        console.log("Please enter valid product quantity");
+        alert("Please enter valid product quantity");
+      }
+      
     }
   }
 

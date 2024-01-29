@@ -8,5 +8,4 @@ export interface IUser {
 
 export interface IUserData {
     id: number | null;
-    //token: string
 }

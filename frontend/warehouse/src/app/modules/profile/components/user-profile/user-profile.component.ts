@@ -30,18 +30,15 @@ export class UserProfileComponent {
 
   fetchUserData() {
     const userId = this.authService.getUserId();
-    console.log(userId);
     if (userId) {
       this.usersService.getUser({ id: userId }).subscribe(
         (response) => {
-          console.log('User Data:', response);
           if (response && response.id) {
             this.user = response; // Assign fetched user data to 'user' property directly
           }
         },
         (error) => {
           console.error('Failed to fetch user data', error);
-          // Handle error
         }
       );
     } else {

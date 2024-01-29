@@ -26,11 +26,11 @@ export class RegisterUserComponent {
       this.authService.registerUser(this.user).subscribe(
         (response) => {
           if(response && response.token && response.tokenExpiry){
+            const tokenExpiryDate = new Date(response.tokenExpiry);
             // Set the token and token expiry in AuthService
             this.authService.setToken(response.token);
-            this.authService.setTokenExp(response.tokenExpiry);
-            console.log(response.tokenExpiry);
-            console.log(response.token);
+            this.authService.setTokenExp(tokenExpiryDate);
+            console.log(tokenExpiryDate);
             console.log('User registered successfully');
             alert('User registered successfully');
 

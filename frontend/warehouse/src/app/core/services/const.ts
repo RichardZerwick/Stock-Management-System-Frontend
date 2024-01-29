@@ -13,4 +13,5 @@ export enum UserEndPoints{
 export enum ProductEndPoints{
     CREATE = "product/create",
     RETRIEVE = "product/retrieve",
+    DELETE = "product/delete",
 }
