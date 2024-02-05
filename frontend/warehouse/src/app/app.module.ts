@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
-import { ProductsEventsService } from 'src/app/core/services/products/products-events.service';
 
 @NgModule({
   declarations: [
@@ -18,7 +17,6 @@ import { ProductsEventsService } from 'src/app/core/services/products/products-e
     HttpClientModule,
     AppRoutingModule,
   ],
-  providers: [ProductsEventsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

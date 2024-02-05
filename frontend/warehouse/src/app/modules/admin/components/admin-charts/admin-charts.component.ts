@@ -2,8 +2,7 @@
 import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { ProductsService } from 'src/app/core/services/products/products.service';
 import { Chart, registerables  } from 'chart.js';
-import { ProductsEventsService } from 'src/app/core/services/products/products-events.service';
-import { Subscription } from 'rxjs';
+import { Subscription, interval } from 'rxjs';
 
 Chart.register(...registerables);
 
@@ -17,17 +16,13 @@ export class AdminChartsComponent implements OnInit {
 
   data: any[] = [];
   categories: any[] = [];
-  productDeletedSub!: Subscription;
+  timerSub!: Subscription;
 
   constructor(
-    private productService: ProductsService,
-    private productsEventsService: ProductsEventsService,) {}
+    private productService: ProductsService,) {}
 
   ngOnInit() {
-    this.productDeletedSub = this.productsEventsService.productDeleted$.subscribe(() => {
-      this.loadChartData();
-      console.log('called');
-    })
+    this.startTimer();
   }
 
   ngAfterViewInit(): void {
@@ -35,8 +30,8 @@ export class AdminChartsComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    if (this.productDeletedSub) {
-      this.productDeletedSub.unsubscribe();
+    if (this.timerSub) {
+      this.timerSub.unsubscribe();
     }
   }
 
@@ -83,7 +78,6 @@ export class AdminChartsComponent implements OnInit {
             this.data.push({ y: category, x: quantity });
           });
 
-          this.clearChart();
           this.createChart();
         } else {
           console.error('Failed to load products');
@@ -105,6 +99,10 @@ export class AdminChartsComponent implements OnInit {
     if (!ctx) {
       console.error('Failed to acquire context from the chart canvas.');
       return;
+    }
+
+    if (Chart.getChart(ctx)) {
+      Chart.getChart(ctx)?.destroy();
     }
     
     new Chart(ctx, {
@@ -128,12 +126,12 @@ export class AdminChartsComponent implements OnInit {
       });
   }
 
-  clearChart() {
-    const canvas = this.chartCanvas.nativeElement;
-    const ctx = canvas.getContext('2d');
-    if (ctx) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
+
+  startTimer() {
+    this.timerSub = interval(30000) // Update every 30 seconds
+      .subscribe(() => {
+        this.loadChartData();
+      });
   }
   
 }

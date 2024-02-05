@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ProductsService } from 'src/app/core/services/products/products.service';
 import { IProduct } from 'src/app/core/types/product';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
-import { ProductsEventsService } from 'src/app/core/services/products/products-events.service';
 
 @Component({
   selector: 'app-all-products',
@@ -16,8 +15,7 @@ export class AllProductsComponent implements OnInit {
 
   constructor(
     private productService: ProductsService,
-    private authService: AuthService,
-    private productsEventsService: ProductsEventsService) { }
+    private authService: AuthService,) { }
 
   ngOnInit(): void {
     this.loadProducts();
@@ -61,8 +59,6 @@ export class AllProductsComponent implements OnInit {
             alert('Product deleted successfully');
             // Reload products after deletion
             this.loadProducts();
-
-            this.productsEventsService.emitProductDeleted();
           } else {
             console.error('Failed to delete product');
           }

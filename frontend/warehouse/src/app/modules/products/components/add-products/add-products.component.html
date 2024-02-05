@@ -3,7 +3,12 @@
     <form #addProductsForm="ngForm" (ngSubmit)="onSubmit(addProductsForm)" class="h-75 p-4 border rounded">
       <div class="form-group">
         <label for="name">Product Name</label>
-        <input type="text" class="form-control" id="name" name="name" [(ngModel)]="product.product_name" required>
+        <input type="text" class="form-control" id="name" name="name" [(ngModel)]="product.product_name" required #name="ngModel">
+        <div *ngIf="name.invalid && (name.dirty || name.touched)" class="text-danger">
+          <div *ngIf="name.errors?.['required']">
+            Product Name is required.
+          </div>
+        </div>
       </div>
       <div class="form-group">
         <label for="role">Product Category</label>
