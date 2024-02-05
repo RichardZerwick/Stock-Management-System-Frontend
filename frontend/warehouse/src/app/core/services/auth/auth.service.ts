@@ -24,7 +24,7 @@ export class AuthService {
   private userId: number | null = null; // User ID property
   private userName: string | null = null; // User Name property
   private lastLogin: Date | null = null; // Last Login property
-  private role: string | undefined = undefined;
+  private role: string | undefined = undefined; // Role property
 
   constructor(
     private http: HttpClient,
@@ -161,7 +161,7 @@ export class AuthService {
   attachTokenToHeaders(): HttpHeaders {
     let headers = new HttpHeaders();
     if (this.token) {
-      headers = headers.set('Authorization', `Bearer ${this.token}`);
+      headers = headers.set('Authorization', `${this.token}`);
     }
     return headers;
   }

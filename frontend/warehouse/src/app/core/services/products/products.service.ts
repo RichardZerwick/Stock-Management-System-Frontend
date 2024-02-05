@@ -4,28 +4,40 @@ import { Observable } from 'rxjs';
 import { API_URL, ProductEndPoints } from '../const';
 import { IProduct, IProductData } from '../../types/product';
 import { IResponse } from '../../types/response';
-import { Subject } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient, 
+    private authService: AuthService) { }
 
   // Create new product
   createProduct(product: IProduct): Observable<IResponse<IProductData>> {
-    return this.http.post<IResponse<IProductData>>(`${API_URL}${ProductEndPoints.CREATE}`, product);
+    return this.authService.makeAuthenticatedRequest<IResponse<IProductData>>(
+      `${API_URL}${ProductEndPoints.CREATE}`, 
+      'post', 
+      product
+    );
   }
 
   // Retrieve all products
   getAllProducts(): Observable<IResponse<IProduct[]>> {
-    return this.http.get<IResponse<IProduct[]>>(`${API_URL}${ProductEndPoints.RETRIEVE}`);
+    return this.authService.makeAuthenticatedRequest<IResponse<IProduct[]>>(
+      `${API_URL}${ProductEndPoints.RETRIEVE}`, 
+      'get'
+    );
   }
 
   // Delete a product
   deleteProduct(productId: number): Observable<IResponse<any>> {
-    return this.http.delete<IResponse<IProductData>>(`${API_URL}${ProductEndPoints.DELETE}/${productId}`);
+    return this.authService.makeAuthenticatedRequest<IResponse<any>>(
+      `${API_URL}${ProductEndPoints.DELETE}/${productId}`, 
+      'delete'
+    );
   }
 
 }
