@@ -30,7 +30,7 @@ export class RegisterUserComponent {
             // Set the token and token expiry in AuthService
             this.authService.setToken(response.token);
             this.authService.setTokenExp(tokenExpiryDate);
-            console.log(tokenExpiryDate);
+  
             console.log('User registered successfully');
             alert('User registered successfully');
 

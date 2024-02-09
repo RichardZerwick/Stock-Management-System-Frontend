@@ -4,7 +4,7 @@
       <div class="form-group">
         <label for="name">Name</label>
         <input type="text" class="form-control" id="name" name="name" [(ngModel)]="user.name" required pattern="[a-zA-Z ]+">
-        <div *ngIf="registrationForm.controls['name'].invalid && (registrationForm.controls['name'].dirty || registrationForm.controls['name'].touched)" class="text-danger">
+        <div *ngIf="registrationForm.controls['name']?.invalid && (registrationForm.controls['name']?.dirty || registrationForm.controls['name']?.touched)" class="text-danger">
           <div *ngIf="registrationForm.controls['name'].errors?.['required']">
             Name is required.
           </div>
@@ -16,7 +16,7 @@
       <div class="form-group">
         <label for="email">Email</label>
         <input type="email" class="form-control" id="email" name="email" [(ngModel)]="user.email" required email>
-        <div *ngIf="registrationForm.controls['email'].invalid && (registrationForm.controls['email'].dirty || registrationForm.controls['email'].touched)" class="text-danger">
+        <div *ngIf="registrationForm.controls['email']?.invalid && (registrationForm.controls['email']?.dirty || registrationForm.controls['email']?.touched)" class="text-danger">
           <div *ngIf="registrationForm.controls['email'].errors?.['required']">
             Email is required.
           </div>
@@ -28,7 +28,7 @@
       <div class="form-group">
         <label for="password">Password</label>
         <input type="password" class="form-control" id="password" name="password" [(ngModel)]="user.password" required minlength="6">
-        <div *ngIf="registrationForm.controls['password'].invalid && (registrationForm.controls['password'].dirty || registrationForm.controls['password'].touched)" class="text-danger">
+        <div *ngIf="registrationForm.controls['password']?.invalid && (registrationForm.controls['password']?.dirty || registrationForm.controls['password']?.touched)" class="text-danger">
           <div *ngIf="registrationForm.controls['password'].errors?.['required']">
             Password is required.
           </div>
@@ -43,7 +43,7 @@
           <option value="admin">Admin</option>
           <option value="cashier">Cashier</option>
         </select>
-        <div *ngIf="registrationForm.controls['role'].invalid && (registrationForm.controls['role'].dirty || registrationForm.controls['role'].touched)" class="text-danger">
+        <div *ngIf="registrationForm.controls['role']?.invalid && (registrationForm.controls['role']?.dirty || registrationForm.controls['role']?.touched)" class="text-danger">
           <div *ngIf="registrationForm.controls['role'].errors?.['required']">
             Role is required.
           </div>

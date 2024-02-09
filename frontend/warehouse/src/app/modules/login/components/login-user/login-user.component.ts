@@ -33,7 +33,6 @@ export class LoginUserComponent {
     if (loginForm.valid) {
       this.authService.loginUser(this.user).subscribe(
         (response) => {
-          console.log(response);
           if(response && response.token && response.id !== undefined && response.role !== undefined && response.tokenExpiry !== undefined){
             const tokenExpiryDate = new Date(response.tokenExpiry);
             
@@ -41,7 +40,6 @@ export class LoginUserComponent {
             this.authService.setToken(response.token);
             this.authService.setUserRole(response.role);
             this.authService.setTokenExp(tokenExpiryDate);
-            console.log(tokenExpiryDate);
             
             Promise.resolve().then(() => {
               const id = response.id as unknown;

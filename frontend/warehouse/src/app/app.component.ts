@@ -24,6 +24,7 @@ export class AppComponent {
         }
         else{
           console.log("Token is valid");
+          this.router.navigate(['/profile']);
         }
       }
       else{
